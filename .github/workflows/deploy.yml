@@ -16,19 +16,25 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
+          # We do not use 'cache: npm' here because you do not have a package-lock.json file.
+          # This prevents the "lock file not found" error.
+          
       - name: Install dependencies
         run: npm install
+        
       - name: Build
         run: npm run build
         env:
           API_KEY: ${{ secrets.API_KEY }}
+          
       - name: Setup Pages
         uses: actions/configure-pages@v4
+        
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
